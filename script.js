@@ -1,17 +1,31 @@
+// load wasm or something?
 const { cmp400_main } = wasm_bindgen;
+wasm_bindgen();
 
-async function run() {
-    await wasm_bindgen();
-
-    // silence winit's exceptions used for control flow
-    try {
-        cmp400_main()
-    } catch { };
+// run game on button click or something?
+const button_div = document.getElementById("button_div");
+const button = document.createElement("button");
+button.innerHTML = "🙂";
+button_div.appendChild(button);
+onload = () => {
+    button.onclick = () => {
+        button.innerHTML = "😮";
+        setTimeout(() => {
+            button_div.remove();
+            console.log("clicked!");
+            // silence winit's exceptions used for control flow
+            try {
+                cmp400_main()
+            } catch { };
+            // start resize loop
+            requestAnimationFrame(resize_loop);
+            canvas.focus();
+        }, 0);
+    };
 }
 
-run();
-
-// onload and onresize events not used as neither occur after loading the game
+// onload and onresize events not used as neither occur after loading the game 
+// so instead loop forever, or something?
 const canvas = document.getElementById("canvas");
 resize_loop = () => {
     canvas.width = innerWidth;
@@ -20,4 +34,3 @@ resize_loop = () => {
     canvas.style.removeProperty("height");
     requestAnimationFrame(resize_loop);
 }
-requestAnimationFrame(resize_loop);
